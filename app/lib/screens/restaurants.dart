@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'restaurants.dart';
+import './index.dart';
+import './loading.dart';
 
-class FFTHome extends StatefulWidget {
-  FFTHome({Key key}) : super(key: key);
+class Restaurants extends StatefulWidget {
+  Restaurants({Key key}) : super(key: key);
+
   @override
-  _FFTHomeState createState() => _FFTHomeState();
+  _RestaurantsState createState() => _RestaurantsState();
 }
 
-
-class _FFTHomeState extends State<FFTHome> {
+class _RestaurantsState extends State<Restaurants> {
 
   @override
   Widget build(BuildContext context) {
-
     void _onTap(int index) {
       if (index == 0) {
         Navigator.push(
@@ -28,7 +28,9 @@ class _FFTHomeState extends State<FFTHome> {
       }
     }
 
+
     return Scaffold(
+      body: Loading(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
