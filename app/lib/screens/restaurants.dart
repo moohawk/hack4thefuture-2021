@@ -15,6 +15,8 @@ class Restaurants extends StatefulWidget {
 
 class _RestaurantsState extends State<Restaurants> {
 
+  BitmapDescriptor _markerIcon;
+
   Completer<GoogleMapController> _controller = Completer();
 
   Map<MarkerId, Marker> restaurants = <MarkerId, Marker>{};
@@ -24,8 +26,21 @@ class _RestaurantsState extends State<Restaurants> {
     zoom: 14.4746,
   );
 
+  initAssets(context) {
+    if (_markerIcon == null) {
+      ImageConfiguration config = createLocalImageConfiguration(context, size: Size.square(12));
+      BitmapDescriptor.fromAssetImage(config, 'assets/marker-restaurant-128.png')
+      .then((icon) {
+          setState(() {
+              _markerIcon = icon;
+          });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    initAssets(context);
     void _onTap(int index) {
       if (index == 0) {
         Navigator.push(
@@ -51,6 +66,7 @@ class _RestaurantsState extends State<Restaurants> {
               restaurants[mid] = Marker(
                 markerId: mid,
                 position: LatLng(42.7011, 23.3144),
+                icon: _markerIcon,
               );
           });
         },
