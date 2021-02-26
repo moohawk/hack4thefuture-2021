@@ -14,10 +14,13 @@ class Restaurants extends StatefulWidget {
 }
 
 class _RestaurantsState extends State<Restaurants> {
+
   Completer<GoogleMapController> _controller = Completer();
 
+  Map<MarkerId, Marker> restaurants = <MarkerId, Marker>{};
+
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(42.7011, 23.3144),
     zoom: 14.4746,
   );
 
@@ -38,12 +41,21 @@ class _RestaurantsState extends State<Restaurants> {
     }
 
     return Scaffold(
-       body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
+      body: GoogleMap(
+        mapType: MapType.normal,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
+
+          setState(() {
+              final mid = MarkerId('test');
+              restaurants[mid] = Marker(
+                markerId: mid,
+                position: LatLng(42.7011, 23.3144),
+              );
+          });
         },
+        initialCameraPosition: _kGooglePlex,
+        markers: Set<Marker>.of(restaurants.values),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
