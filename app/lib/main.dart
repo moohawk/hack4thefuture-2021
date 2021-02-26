@@ -1,3 +1,4 @@
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -78,9 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-
+            icon: Icon(FlutterIcons.food_mco),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
