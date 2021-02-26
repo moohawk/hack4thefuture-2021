@@ -47,7 +47,31 @@ class _FeedState extends State<Feed> {
 
   Widget main(BuildContext context) {
     return Scaffold(
-      body: Text("Details for ${_feedItems[0]['label']}"),
+      body: Container(
+        height: 150.0,
+        margin: new EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(38.0),
+          ),
+        ),
+        child: Card(
+          shape:  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 10,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const ListTile(
+                leading: Icon(Icons.album, size: 70),
+                title: Text('Heart Shaker', style: TextStyle(color: Colors.white)),
+                subtitle: Text('TWICE', style: TextStyle(color: Colors.white)),
+              ),
+            ]
+          ),
+        ),
+      ),
     );
   }
 
