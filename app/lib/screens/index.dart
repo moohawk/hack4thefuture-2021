@@ -1,3 +1,4 @@
+import 'package:fft/offer/offer_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'restaurants.dart';
@@ -29,6 +30,7 @@ class _FFTHomeState extends State<FFTHome> {
     }
 
     return Scaffold(
+      body: OfferHomeScreen(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
