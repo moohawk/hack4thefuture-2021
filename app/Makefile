@@ -1,5 +1,5 @@
 adb-reverse:
-	adb reverse tcp:8888 tcp:8888
+	adb reverse tcp:8000 tcp:8000
 
 run:
 	flutter run

@@ -1,36 +1,30 @@
 import 'package:fft/offer/offer_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'loading.dart';
+import 'feed.dart';
 import 'restaurants.dart';
 
 class FFTHome extends StatefulWidget {
   FFTHome({Key key}) : super(key: key);
+
   @override
   _FFTHomeState createState() => _FFTHomeState();
 }
 
-
 class _FFTHomeState extends State<FFTHome> {
+
+  int _currentWidget = 0;
+
+  final List<Widget> _children = [
+    Feed(),
+    Restaurants(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-
-    void _onTap(int index) {
-      if (index == 0) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FFTHome()),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Restaurants()),
-        );
-      }
-    }
-
     return Scaffold(
-      body: OfferHomeScreen(),
+      body: _children[_currentWidget],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -42,8 +36,13 @@ class _FFTHomeState extends State<FFTHome> {
             label: 'Ресторанти',
           ),
         ],
-        selectedItemColor: Colors.amber[800],
-        onTap: _onTap,
+        currentIndex: _currentWidget,
+        selectedItemColor: Color(0xffff43a0),
+        onTap: (index)  {
+          setState(() {
+              _currentWidget = index;
+          });
+        },
       )
     );
   }

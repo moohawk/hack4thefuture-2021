@@ -41,19 +41,6 @@ class _RestaurantsState extends State<Restaurants> {
   @override
   Widget build(BuildContext context) {
     initAssets(context);
-    void _onTap(int index) {
-      if (index == 0) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FFTHome()),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Restaurants()),
-        );
-      }
-    }
 
     return Scaffold(
       body: GoogleMap(
@@ -73,20 +60,6 @@ class _RestaurantsState extends State<Restaurants> {
         initialCameraPosition: _kGooglePlex,
         markers: Set<Marker>.of(restaurants.values),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(FlutterIcons.rss_mco),
-            label: 'Начало',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FlutterIcons.food_mco),
-            label: 'Ресторанти',
-          ),
-        ],
-        selectedItemColor: Colors.amber[800],
-        onTap: _onTap,
-      )
     );
   }
 }

@@ -14,16 +14,21 @@ class Restaurant(BaseModel):
 
 @app.get("/")
 async def read_root():
-    return "Wellcome to Food For Thought" 
+    return "Wellcome to Food For Thought"
 
 @app.get("/restaurants/")
 async def get_all_restaurants():
     return [{"Restaurant":1},{"Restaurant":2}]
 
-@app.get("/restaurants/{restaurant_id}")                               
-async def get_restaurant_by_id(restaurant_id: int):
-    return {"restaurant_id": restaurant_id, "Restaurant": restaurant_id}
-
-@app.get("/search")                               
-async def get_restaurants_by_location(latitude: float, longitude: float):
-    return [{"Restaurant":latitude},{"Restaurant":longitude}]
+@app.get("/restaurants/search")
+async def get_restaurants_by_location(latitude: float = 0.0, longitude: float = 0.0):
+    return [
+        {
+            "label": "Chevermeto",
+            "address": "ul. Bogatica 22",
+            "coordinates":  {
+                "lat": 42.7011,
+                "lon": 23.3144,
+            }
+        }
+    ]
