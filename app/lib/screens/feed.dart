@@ -11,7 +11,7 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   bool _loading = false;
-  Map<String, dynamic> _feedItems = Map();
+  List<dynamic> _feedItems = List.empty();
 
   void _loadFeed() async {
     setState(() {
@@ -27,7 +27,8 @@ class _FeedState extends State<Feed> {
       );
 
       setState(() {
-          _feedItems = response.data as Map<String, dynamic>;
+          print(response.data);
+          _feedItems = response.data as List<dynamic>;
       });
     } catch (e) {
       print(e);
@@ -46,7 +47,7 @@ class _FeedState extends State<Feed> {
 
   Widget main(BuildContext context) {
     return Scaffold(
-      body: Text("Details for"),
+      body: Text("Details for ${_feedItems[0]['label']}"),
     );
   }
 
