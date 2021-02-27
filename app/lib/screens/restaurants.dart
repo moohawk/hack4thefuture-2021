@@ -44,7 +44,8 @@ class _RestaurantsState extends State<Restaurants> {
           "ne": {
             "latitude": bounds.northeast.latitude,
             "longitude": bounds.northeast.longitude,
-          }
+          },
+          "limit": 30,
         }
       );
 
