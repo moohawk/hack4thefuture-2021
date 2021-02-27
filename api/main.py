@@ -36,12 +36,13 @@ class RestaurantSearchRequest(BaseModel):
     s: Optional[str] = None
     ne: Optional[Coordinates] = None
     sw: Optional[Coordinates] = None
+    limit: Optional[int] = 30
 
 @app.post("/restaurants/search")
 async def restaurants_search(sr: RestaurantSearchRequest):
     sql = text("""SELECT id, name,  ST_Y(coordinates) as lat, ST_X(coordinates) as lon, address FROM public.restaurants
-    WHERE ST_Contains(st_makeenvelope(:min_x, :min_y, :max_x, :max_y, 4326), coordinates) AND name != '' LIMIT 5""")
-    rs = engine.execute(sql, {"min_x": sr.sw.longitude, "min_y": sr.sw.latitude, "max_x": sr.ne.longitude, "max_y": sr.ne.latitude})
+    WHERE ST_Contains(st_makeenvelope(:min_x, :min_y, :max_x, :max_y, 4326), coordinates) AND name != '' LIMIT :limit """)
+    rs = engine.execute(sql, {"min_x": sr.sw.longitude, "min_y": sr.sw.latitude, "max_x": sr.ne.longitude, "max_y": sr.ne.latitude, "limit": sr.limit})
     search_results = []
     for r in rs:
         search_results.append(dict(r))

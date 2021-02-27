@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dio/dio.dart';
 import './index.dart';
 import './loading.dart';
+
 
 class Restaurants extends StatefulWidget {
   Restaurants({Key key}) : super(key: key);
@@ -18,6 +20,7 @@ class _RestaurantsState extends State<Restaurants> {
   BitmapDescriptor _markerIcon;
 
   Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _controllerInstance;
 
   Map<MarkerId, Marker> restaurants = <MarkerId, Marker>{};
 
@@ -25,6 +28,44 @@ class _RestaurantsState extends State<Restaurants> {
     target: LatLng(42.7011, 23.3144),
     zoom: 14.4746,
   );
+
+
+  void _searchRestaurants(LatLngBounds bounds) async {
+    try {
+      Response response = await Dio(BaseOptions(
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+      )).post(
+        "http://localhost:8000/restaurants/search",
+        data: {
+          "sw": {
+            "latitude": bounds.southwest.latitude,
+            "longitude": bounds.southwest.longitude,
+          },
+          "ne": {
+            "latitude": bounds.northeast.latitude,
+            "longitude": bounds.northeast.longitude,
+          },
+          "limit": 30,
+        }
+      );
+
+      setState(() {
+          print(response.data);
+          (response.data as List<dynamic>).map((r) {
+              print(r);
+              final MarkerId mid = MarkerId(r['id']);
+              restaurants[mid] = Marker(
+                markerId: mid,
+                position: LatLng(r['lat'], r['lon']),
+                icon: _markerIcon,
+              );
+          }).toList();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   initAssets(context) {
     if (_markerIcon == null) {
@@ -47,15 +88,15 @@ class _RestaurantsState extends State<Restaurants> {
         mapType: MapType.normal,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-
-          setState(() {
-              final mid = MarkerId('test');
-              restaurants[mid] = Marker(
-                markerId: mid,
-                position: LatLng(42.7011, 23.3144),
-                icon: _markerIcon,
-              );
-          });
+          _controllerInstance = controller;
+        },
+        onCameraIdle: () {
+          if (_controller.isCompleted) {
+            _controllerInstance.getVisibleRegion().then(
+              (bounds) {
+                _searchRestaurants(bounds);
+            });
+          }
         },
         initialCameraPosition: _kGooglePlex,
         markers: Set<Marker>.of(restaurants.values),

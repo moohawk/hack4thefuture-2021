@@ -19,17 +19,19 @@ class _FeedState extends State<Feed> {
     });
 
     try {
-      Response response = await Dio(BaseOptions(
-          contentType: Headers.jsonContentType,
-          responseType: ResponseType.json,
-      )).get(
-        "http://localhost:8000/restaurants/search"
-      );
-
-      setState(() {
-          print(response.data);
-          _feedItems = response.data as List<dynamic>;
-      });
+      //////////////////////////////////////////////////////
+      // Response response = await Dio(BaseOptions(       //
+      //     contentType: Headers.jsonContentType,        //
+      //     responseType: ResponseType.json,             //
+      // )).get(                                          //
+      //   "http://localhost:8000/restaurants/search"     //
+      // );                                               //
+      //                                                  //
+      // setState(() {                                    //
+      //     print(response.data);                        //
+      //     _feedItems = response.data as List<dynamic>; //
+      // });                                              //
+      //////////////////////////////////////////////////////
     } catch (e) {
       print(e);
     } finally {
@@ -48,8 +50,7 @@ class _FeedState extends State<Feed> {
   Widget main(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: 150.0,
-        margin: new EdgeInsets.all(8.0),
+        margin: new EdgeInsets.only(left: 8.0, top: 25.0, right: 8.0, bottom: 0),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
             Radius.circular(38.0),
@@ -63,10 +64,37 @@ class _FeedState extends State<Feed> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const ListTile(
-                leading: Icon(Icons.album, size: 70),
-                title: Text('Heart Shaker', style: TextStyle(color: Colors.white)),
-                subtitle: Text('TWICE', style: TextStyle(color: Colors.white)),
+              Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).padding.top,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 12 - 8.0 * 0.8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, top: 0, right: 8.0, bottom: 0),
+                            child: Text(
+                              'Последни предложения',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22 + 6 - 6 * 0.8,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ]
           ),
