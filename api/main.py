@@ -59,17 +59,17 @@ class ValidTime(BaseModel):
 
 class Contribution(BaseModel):
     title: str
+    status: str
     retstaurant: Restaurant
     valid_time: ValidTime
-    status: string
 
-@app.get("/contributions/search")
+@app.post("/contributions/search")
 async def contributions_search(sr: ContributionSearchRequest):
-    sql = text("""SELECT id as contribution_id, title, lower(valid_time) as valid_from, upper(valid_time) as valid_to, status, 
-                name, coordinates, address FROM public.contributions 
-                LEFT JOIN public.restaurants on restaurants.id = contributions.restaurant_id
+    sql = text("""SELECT c.id as contribution_id, title, lower(valid_time) as valid_from, upper(valid_time) as valid_to, c.status, 
+                name, coordinates, address FROM public.contributions as c
+                LEFT JOIN public.restaurants on restaurants.id = c.restaurant_id
                 ORDER BY ST_Distance(ST_MakePoint(cast(:lat as double precision),
-                                            cast(:lon as double precision))::geography,4326)::geometry, coordinates)""")
+                                            cast(:lon as double precision))::geography, coordinates)""")
     rs = engine.execute(sql, {"lat": sr.coordinates.latitude, "lon": sr.coordinates.longitude})
     search_results = []
     for r in rs:
