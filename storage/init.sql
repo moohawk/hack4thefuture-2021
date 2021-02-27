@@ -11,3 +11,12 @@ create table restaurants(
        coordinates geometry(Point,4326),
        status text not null default 'inactive'
 );
+
+
+create table contributions(
+       id uuid not null primary key,
+       restaurant_id uuid not null,
+       title text not null,
+       valid_time tsrange not null,
+       status text not null default 'inactive'
+);
