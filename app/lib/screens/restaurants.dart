@@ -20,6 +20,7 @@ class _RestaurantsState extends State<Restaurants> {
   BitmapDescriptor _markerIcon;
 
   Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _controllerInstance;
 
   Map<MarkerId, Marker> restaurants = <MarkerId, Marker>{};
 
@@ -87,9 +88,15 @@ class _RestaurantsState extends State<Restaurants> {
         mapType: MapType.normal,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-          controller.getVisibleRegion().then((bounds) {
-              _searchRestaurants(bounds);
-          });
+          _controllerInstance = controller;
+        },
+        onCameraIdle: () {
+          if (_controller.isCompleted) {
+            _controllerInstance.getVisibleRegion().then(
+              (bounds) {
+                _searchRestaurants(bounds);
+            });
+          }
         },
         initialCameraPosition: _kGooglePlex,
         markers: Set<Marker>.of(restaurants.values),
