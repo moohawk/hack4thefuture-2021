@@ -26,8 +26,8 @@ for item in restaurants[1:]:
     item[0] = item[0].replace("'","''")
     cursor.execute(f'''INSERT INTO restaurants(id, address, coordinates, name)
                       VALUES (uuid_generate_v4(), '{item[1]}',
-                      ST_SetSRID(ST_MakePoint(cast({item[2]} as double precision),
-                                            cast({item[3]} as double precision))::geography,4326)::geometry, E'{item[0]}')''')
+                      ST_SetSRID(ST_MakePoint(cast({item[3]} as double precision),
+                                            cast({item[2]} as double precision))::geography,4326)::geometry, E'{item[0]}')''')
 
 conn.commit()
 conn.close()
