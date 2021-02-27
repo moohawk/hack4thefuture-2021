@@ -13,7 +13,6 @@ class FFTHome extends StatefulWidget {
 }
 
 class _FFTHomeState extends State<FFTHome> {
-
   int _currentWidget = 0;
 
   final List<Widget> _children = [

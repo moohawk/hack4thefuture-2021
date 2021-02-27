@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import './screens/index.dart';
+import 'layout.dart';
+import 'theme.dart';
 
 void main() {
   runApp(FFTApp());
@@ -10,10 +12,9 @@ class FFTApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FFTHome(),
+      home: Layout(),
     );
   }
 }
