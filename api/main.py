@@ -31,9 +31,9 @@ class Coordinates(BaseModel):
     longitude: float
 
 class SearchRequest(BaseModel):
-    s: str
-    ne: Coordinates
-    sw: Coordinates
+    s: Optional[str] = None
+    ne: Optional[Coordinates] = None
+    sw: Optional[Coordinates] = None
 
 @app.post("/restaurants/search")
 async def restaurants_search(sr: SearchRequest):
