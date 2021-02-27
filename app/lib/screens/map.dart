@@ -97,7 +97,7 @@ class _MapScreenState extends State<MapScreen> {
     initAssets(context);
 
     return Scaffold(
-      body: _initialCoordinates == null ? Container() : GoogleMap(
+      body: _initialCoordinates == null ? Loading() : GoogleMap(
         mapType: MapType.normal,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
