@@ -64,7 +64,6 @@ class _MapScreenState extends State<MapScreen> {
       );
 
       setState(() {
-          print(response.data);
           (response.data as List<dynamic>).map((r) {
               print(r);
               final MarkerId mid = MarkerId(r['id']);
@@ -113,7 +112,7 @@ class _MapScreenState extends State<MapScreen> {
         },
         initialCameraPosition: CameraPosition(
           target: _initialCoordinates,
-          zoom: 17.0
+          zoom: 16.0
         ),
         markers: Set<Marker>.of(restaurants.values),
       ),
