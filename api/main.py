@@ -66,12 +66,11 @@ class Contribution(BaseModel):
 @app.get("/contributions/search")
 async def contributions_search(sr: ContributionSearchRequest):
     sql = text("""SELECT id as contribution_id, title, lower(valid_time) as valid_from, upper(valid_time) as valid_to, status, 
-                name,  ST_Y(coordinates) as lat, ST_X(coordinates) as lon, address FROM public.contributions 
-                LEFT JOIN public.restaurants on restaurants.id = contributions.restaurant_id """)
-
-    sql = text("""SELECT id, title,  ST_Y(coordinates) as lat, ST_X(coordinates) as lon, address FROM public.restaurants
-    WHERE ST_Contains(st_makeenvelope(:min_x, :min_y, :max_x, :max_y, 4326), coordinates) AND name != '' LIMIT 5""")
-    rs = engine.execute(sql, {"min_x": sr.sw.longitude, "min_y": sr.sw.latitude, "max_x": sr.ne.longitude, "max_y": sr.ne.latitude})
+                name, coordinates, address FROM public.contributions 
+                LEFT JOIN public.restaurants on restaurants.id = contributions.restaurant_id
+                ORDER BY ST_Distance(ST_MakePoint(cast(:lat as double precision),
+                                            cast(:lon as double precision))::geography,4326)::geometry, coordinates)""")
+    rs = engine.execute(sql, {"lat": sr.coordinates.latitude, "lon": sr.coordinates.longitude})
     search_results = []
     for r in rs:
         search_results.append(dict(r))
